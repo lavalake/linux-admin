@@ -1,0 +1,117 @@
+http://www.howtogeek.com/howto/43471/how-to-configure-the-linux-grub2-boot-menu-the-easy-way/
+
+How-To Geek
+
+    Articles l l Subscribe l l Search 
+
+How to Configure the Linux Grub2 Boot Menu the Easy Way
+
+We, like many Linux geeks, have had some trouble making the transition to Grub2, or for some of us, learning how to configure it from scratch. Fortunately, a new graphical tool has made this process easy and straightforward!
+
+Photo by e_monk.
+Data is transforming the way companies work
+
+See how your data strategy compares to the competition.
+Sponsored by Microsoft
+Installing Grub Customizer
+
+The tool in question is called Grub Customizer, created by Daniel Richter. He’s provided a PPA to make installing the tool quick and easy.
+
+Open a terminal window (Ctrl+Alt+T or Applications > Accessories > Terminal) and type in the following commands.
+
+    sudo add-apt-repository ppa:danielrichter2007/grub-customizer
+    sudo apt-get update
+    sudo apt-get install grub-customizer
+
+Grub Customizer will now show up in the Applications > System Tools menu.
+
+sshot-1
+
+Or you can open it from the command line.
+
+    gksudo grub-customizer
+
+Hide Boot Menu Options
+
+Over time, your boot menu can get cluttered with old versions of the Linux kernel. In a previous article, we showed you how to remove these manually; Grub Customizer makes this process much easier.
+
+When Grub Customizer starts up, you’ll see a list of all the items that show up in the boot menu.
+
+Grub Customizer_002
+
+To hide entries that you don’t want to see anymore, simply uncheck the checkbox next to them.
+
+Grub Customizer_004
+
+Click the Save button at the top-left to make your changes permanent.
+
+sshot-3
+
+You can uncheck entire sections if you don’t want Grub2 to probe for new operating systems, or give you the option to test your computer’s memory.
+
+Note that, unlike the manual method, this process does not actually remove the kernels from your computer, it just hides them from the boot menu.
+Customize Grub Behavior
+
+Grub Customizer can do much more than hide boot menu entries! Opening up the Preferences window lets you customize almost every aspect of Grub.
+
+For example, you can set the default boot menu entry to a certain position, or a specific item.
+
+sshot-2
+
+If you’re bored by the default white-text-on-black-background look of Grub2, you can add a background image and customize text colors.
+
+Grub Customizer - settings_006
+
+And, for Grub2 experts, you can set advanced settings much more easily than by editing the configuration files manually.
+
+Grub Customizer - settings_007
+
+Grub Customizer is a great addition to any Linux installation that uses Grub2!
+
+Thanks to How-To Geek commenter Hugues for recommending this program!
+
+See this Ubuntu Forums post for more detailed information on Grub Customizer.
+JOIN THE DISCUSSION
+
+Trevor is our resident Linux geek, but always keeps his eyes open for neat Windows tricks too.
+
+    Published 02/14/11
+
+SHOW ARCHIVED READER COMMENTS (12)
+DID YOU KNOW?
+
+The current U.S. flag was designed by a 17 year old high school student as part of a class project; he received a B- on the design, which was later changed to an A when the design was selected as the official new flag.
+BEST OF HOW-TO GEEK
+How to Search Google Like a Pro: 11 Tricks You Have to Know
+What’s the Best Antivirus for Windows 10? (Is Windows Defender Good Enough?)
+How to Back Up Your Text Messages to Your Gmail Account
+How to Use All of Windows 10’s Backup and Recovery Tools
+How to Run Any Program as a Background Service in Windows
+How to Find and Remove Duplicate Files on Windows
+How to Enable Wi-Fi Calling on an Android Phone
+7 Ways To Free Up Hard Disk Space On Windows
+How to Use Your Macbook’s Trackpad Gestures
+More Articles You Might Like
+ABOUT
+
+    About Us
+    Contact Us
+    Discussion Forum
+    Advertising
+    Privacy Policy
+
+GET ARTICLES BY EMAIL
+
+Enter your email address to get our daily newsletter.
+
+FOLLOW US
+
+    Twitter
+    Facebook
+
+    Google+
+    RSS Feed
+
+Disclaimer: Most of the pages on the internet include affiliate links, including some on this site.
+
+Copyright © 2006-2016 How-To Geek, LLC  All Rights Reserved
