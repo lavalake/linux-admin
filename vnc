@@ -1,0 +1,343 @@
+http://c-nergy.be/blog/?p=8361
+
+Skip to content
+Griffon's IT Library
+Simple IT Library for the rest of us
+Ubuntu 15.04 – Configure your system to have x11vnc running at startup
+May 18, 2015 Griffon	
+
+Hello World,
+
+If you are following us, you probably remember that we wrote already a post about this topic (see Ubuntu 14.10 – Configure your sytem to have x11vnc running at startup).  Since Ubuntu 15.04 is using systemd, the instructions found in the previous post are not applicable anymore.  Some of our readers had issues after upgrading to Ubuntu 15.04.  The x11VNC is not running at startup anymore.
+
+This post will provide the necessary information to have x11vnc running at startup on ubuntu 15.04 when systemd is used.
+
+ 
+Our Goal !
+
+At the end of this post, you should be able to connect via vnc to your Ubuntu machine even if there is a reboot and even if no user are logged into the machine.  This configuration should display the login screen via vnc viewer client you are using.
+
+We didn’t invent anything here.  All the information provided here are based on the information made available at this location :  https://help.ubuntu.com/community/VNC/Servers#Have_x11vnc_start_automatically_via_systemd_in_any_environment_.28Vivid.2B-.29
+Installing x11vnc server
+
+In this post, we have decided to use the x11vnc server package to provide vnc capabilities.  The installation process is quite straight forward.  Log into your ubuntu 15.04 machine, open the terminal console and issue the following command :
+
+    sudo apt-get install x11vnc
+
+VncUb14.10_1
+
+Click on Picture for Better Resolution
+
+To have a minimum of security, we will protect the vnc connection via a password.  The password will be stored in a file.  To create this file, you will need to issue the following command
+
+    sudo x11vnc –storepasswd /etc/x11vnc.pass
+
+You will be asked to enter a password. Enter the password and confirm your choice and you should be good to go
+
+VncUb14.10_2
+
+Click on Picture for Better Resolution
+Create the Service Unit file
+
+So far, we have just issued standard command related to the x11vnc package.  We need to create the service unit file for our x11vnc service.  To do this, we will issue the following command :
+
+    sudo nano /lib/systemd/system/x11vnc.service
+
+This file should content the following lines
+
+    [Unit]
+    Description=Start x11vnc at startup.
+    After=multi-user.target
+
+    [Service]
+    Type=simple
+    ExecStart=/usr/bin/x11vnc -auth guess -forever -loop -noxdamage -repeat -rfbauth /etc/x11vnc.pass -rfbport 5900 -shared
+
+    [Install]
+    WantedBy=multi-user.target
+
+Save the file
+Configure Systemd
+
+It’s time to issue the command to have systemd aware of the change and make the service running at startup.  In a command prompt, you will issue the following command :
+
+    sudo systemctl daemon-reload
+    sudo systemctl enable x11vnc.service
+
+ 
+
+Restart the system and do not login.  We will check if this is working…..
+Testing the solution !
+
+To check that you can indeed perform a vnc connection to your Ubuntu Machine, you will try to connect to it using your favourite vncviewer (we are using TigerVnc) while nobody is connected and just after a reboot of the machine.
+
+In the vncviewer, you will provide the ip address or hostname of the machine to connect and the port to be used.  In our example, he port used is 5900.  If you have set a password to protect your vnc connection, you will be prompted for a password as well.
+
+VncUb14.10_6
+
+Click on Picture for Better Resolution
+
+If everything is ok, you should see the Ubutun login page displayed inside your vncviewer
+
+TigerVnc_U15.04.png
+
+Click on Picture for Better Resolution
+
+ 
+Final Notes
+
+And voila !  We have sucessfully updated the instructions on how to have x11vnc run at startup.  As you can see, since Ubuntu 15.04 is using the Systemd solution, we need to create our service unit files (x11vnc.service) and register them with systemctl and we are done.
+
+Pff… the last days I have updated some of the most popular posts about xrdp, x11vnc and ubuntu 15.04… It’s time for me to take a break…
+
+Till next time
+
+See ya
+
+ 
+
+ 
+Posted in UbuntuTagged startup, Systemd, Ubuntu 15.04, X11VNC	
+Post navigation
+XRDP – Ubuntu 15.04, systemd and xrdp installation
+RDS 2012 R2 – Access is Denied While connecting to remoteApp- Issue 3
+79 thoughts on “Ubuntu 15.04 – Configure your system to have x11vnc running at startup”
+Comment navigation
+Older Comments
+
+    Griffon says:	
+    March 2, 2016 at 10:26 pm
+
+    Hello there,
+
+    nice to hear.. I didn’t know about the sddm logn manager… well spotted
+    Ant thank you for the sharing the info with us
+
+    Till next time
+    see ya
+    chalan says:	
+    March 8, 2016 at 2:43 pm
+
+    tested on lbuntu, working perfectly, thank you
+    Griffon says:	
+    March 9, 2016 at 10:49 pm
+
+    Hello there,
+
+    Thank you for the visit and the feedback.
+
+    Till next time
+    See ya
+    Robert says:	
+    March 24, 2016 at 6:05 am
+
+    Fantastic! A solution that works on my Raspberry Pi 3 (Raspbian Jesse). A lot of solutions required login first via ssh, or autologin with the default user ‘pi’. Your solution allows x11vnc to run at the login screen.
+
+    Thanks much!
+    Griffon says:	
+    March 25, 2016 at 7:50 pm
+
+    HEllo Robert,
+
+    No problem, We are always happy when we can help out 🙂
+    Thank you for your feedback and vist
+    Till next time
+    See ya
+    Shayne says:	
+    March 28, 2016 at 7:26 am
+
+    i followed all the steps to the letter and everything seems to work until i try to connect a viewer.
+
+    im running ubuntu on the odroid xu4 and everthing seems to be properly setup on the odroid, yet when i go to connect a tablet or windows pc it gives me a an error saying the target machine actively refused connection. if you could provide feedback that would be helpfull.
+
+    thanks
+    Griffon says:	
+    March 28, 2016 at 2:38 pm
+
+    Hello Shayne,
+
+    Please check the following
+    1) is the x11vnc service running ? (if you start it manually, what are the results ?)
+    2) Check that firewall allow vnc traffic (port 5900 or higher based on your configuration). Can you do a telnet on the IP:Port used by the X11vnc and see if you go through
+    3) Are you using the correct port for the VNC ?
+    4) which Vnc viewer are you using ? are there any settings that you might need to configure to allow connection
+
+    Hope this help
+    Till next time
+    See ya
+    Mathieu says:	
+    April 3, 2016 at 5:03 am
+
+    Works like a charm on Lubuntu 15.10,
+
+    Thank you!
+    Griffon says:	
+    April 4, 2016 at 6:44 pm
+
+    Hello Mathieu,
+    Thank you for your visit and for your feedback.. We always happy to see that the solution provided here are still working and can be helpful
+    Till next time
+    See ya
+    Duggernaut says:	
+    April 19, 2016 at 12:12 am
+
+    Thanks! Works on Ubuntu 16.04 LTS (final beta) without issue running on a HyperV VM.
+    Griffon says:	
+    April 20, 2016 at 11:25 pm
+
+    Hello There;
+
+    Thank you for your visit and your feedback….by the way, note that a post was already published to cover how to configure x11vnc at startup on 16.04 (see the following link)
+    Dave says:	
+    April 27, 2016 at 4:51 pm
+
+    Awesome write up, this worked fine on 16.04 LTS as well.
+    Griffon says:	
+    April 27, 2016 at 10:01 pm
+
+    Hello Dave,
+
+    Thank you for the feedbak and the visit
+    Till next time
+    See ya
+    megaman says:	
+    May 8, 2016 at 2:45 am
+
+    i had the same problem as tony and did what he suggested and it worked. thanks tony!!
+
+    “FYI. Could not create the password file, would error out everytime, and after many attempts stumbled on the rbfauth option and that is the only way the password file could be created. This was on a clean install of Ubuntu 15.04. Hope that is of any help.”
+    Griffon says:	
+    May 8, 2016 at 6:54 pm
+
+    Hello Megaman,
+
+    Thank you for the feedback.
+
+    It’s really strange that you cannot create the password file. Usually people report that the post is working as is. You and Tony are the only people who encountered issues so far. I would like to investigate a little bit further (if you have time) and see where the problem might be located.
+
+    My guess is that you have copy/paste the command from the blog and try to run it. if this is the case, be aware that text formatting will prevent the command to run properly. To fix this issue, you have to type in the command manually in your Terminal
+
+    We never needed to use the -rfbauth switch to create the password file. The -rfbauth (as per documentation) is to pass the password hash when connecting to the session and not used to create the password file. We have demonstrated that the procedure described is working (see video at http://c-nergy.be/blog/?p=8984). So we are really wondering which kind of error is displayed when running the command ?
+
+    Can you provide us more info about the error you are encountering (possibly screenshots)….What’s the error displayed when you try to run the x11vnc -storepasswd /etc/x11vnc.pass command line option ? Can you see that the x11vnc.pass file is created ? are you using the sudo command ?
+
+    waiting for the feedback
+    Till next time
+    See ya
+    Dan says:	
+    May 9, 2016 at 5:36 pm
+
+    Really clear explanation. Thank you very much!
+    Griffon says:	
+    May 10, 2016 at 12:54 pm
+
+    Hello Dan,
+
+    Thank you for the feedback and for the visit
+    Till next time
+    See ya
+    Evan Gearing says:	
+    May 26, 2016 at 4:37 am
+
+    Hello! Thanks for posting this as I really want to try it. I hate that I have to auto-login at boot to get Vino to run. With this tutorial, I should be able to get what I want. However, do I need to uninstall or disable vino first before doing this or do they just run along side with no issues?
+    Griffon says:	
+    May 27, 2016 at 10:48 pm
+
+    @Evan,
+
+    Hello there
+    In theory, you can simply use the instructions provided in the post and you should not need to do anything with the Vino software
+    Hope this help
+    Till next time
+    See ya
+    Don Gateley says:	
+    May 31, 2016 at 9:36 am
+
+    Worked out of the box. Thank you!
+
+    I have a problem, however, in that the clients I use, TightVNC and VNC Viewer, both give me a really small desktop and I can’t find anywhere either in the client or the host to affect that. Help appreciated.
+    Griffon says:	
+    June 1, 2016 at 9:14 pm
+
+    @Don Gateley,
+
+    If I understand your issue. if you do the full screen with TigerVNC, the ubuntu desktop is not display in full (you have a lower resolution)
+    while connected through tigerVnc, change the screen resolution of your Ubuntu machine and you should see that the screen will adpat to your chosen screen resolution
+
+    Hope this help
+    Till next time
+    See ya
+    QuickSilver says:	
+    July 22, 2016 at 7:22 pm
+
+    This was so helpful. Holy shit I’ve been wasting my time for so many days now. Thanks!
+    Griffon says:	
+    July 23, 2016 at 7:46 pm
+
+    @QuickSilver
+
+    Thank for sharing your positive experience and your visit on this blog
+    Hope that you have found more useful tips and tricks
+    till Next time
+    See ya
+    Joe says:	
+    July 26, 2016 at 10:27 am
+
+    Excellent post!
+    Kudos for using systemd.
+    Lots of stuff out there still using init.d…
+    Griffon says:	
+    July 27, 2016 at 10:35 pm
+
+    @Joe,
+
+    Thank for the feedback…and for the visit
+
+    Till next time
+    See ya
+    Adam says:	
+    August 24, 2016 at 11:20 pm
+
+    This works fine until I reboot my machine, then I need to ssh in and start the x11 service before I can VNC in. What am I missing?
+    Steve Scherer says:	
+    August 25, 2016 at 9:19 pm
+
+    Great instructions and works like a charm on ubuntu 16.04. Thank you for taking the time to create this post!
+    Griffon says:	
+    August 26, 2016 at 9:10 am
+
+    @Adam,
+
+    may be a delay ? have you try a second time and see if you could connect
+
+    Till next time
+    See ya
+    Griffon says:	
+    August 26, 2016 at 9:11 am
+
+    @Steve,
+
+    Thank for the visit and sharing your positive experience….
+    Till next time
+
+    See ya
+
+Comment navigation
+Older Comments
+Leave a Reply
+
+Comment
+
+Name *
+
+Email *
+
+Website
+
+Search for:
+Copyrights & Disclaimers
+This blog and its content are freely available to users but copyrights applies. The content is copyright of c-nergy.be. This means that you cannot duplicate or (...)
+
+Read more
+This website and its content is copyright of c-nergy.be - © c-nergy.be - 2008 - 2016 - All rights reserved.
+Proudly powered by WordPress | Theme: Oria by JustFreeThemes.
