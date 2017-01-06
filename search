@@ -1,0 +1,14 @@
+1. grep
+    https://www.cyberciti.biz/faq/howto-use-grep-command-in-linux-unix/
+    grep word file1 file2
+      search line containing word in files
+    grep -w word file1 file2
+      search whole word matching in files
+    grep -v word file1 file2
+      reverse match
+2. Use the egrep command as follows:
+    $ egrep -w 'word1|word2' /path/to/file
+    dmesg | egrep '(s|h)d[a-z]'
+      match all sd[a-z] or hd[a-z]
+    http://www.computerhope.com/unix/uegrep.htm
+    
