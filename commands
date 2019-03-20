@@ -6,3 +6,8 @@
     find /tmp -mtime +14 | xargs rm
   3. -t, show command
     find /tmp -mtime +14 | xargs -t rm
+    
+2. grep
+  1. before and after lines
+    grep -B 3 -A 2 foo README.txt
+    grep -C 3 foo README.txt
