@@ -11,3 +11,16 @@
   1. before and after lines
     grep -B 3 -A 2 foo README.txt
     grep -C 3 foo README.txt
+  2. display the lines which does not matches all the given pattern.
+
+      Syntax:
+      grep -v -e "pattern" -e "pattern"
+
+      $ cat test-file.txt
+      a
+      b
+      c
+      d
+
+      $ grep -v -e "a" -e "b" -e "c" test-file.txt
+      d
