@@ -1,1 +1,16 @@
 https://opensource.com/article/18/9/tips-productivity-zsh
+https://medium.com/@caulfieldOwen/youre-missing-out-on-a-better-mac-terminal-experience-d73647abf6d7
+installation
+Zsh Installation:
+Zsh ships with OS X, however, it is an older version. I recommend installing the latest version using Homebrew, 
+the Mac package manager.
+To install zsh using Homebrew, enter the following into your terminal:
+brew install zsh zsh-completions
+
+Make zsh your system’s default shell:
+chsh -s $(which zsh)
+
+Verify that it worked:
+echo $SHELL
+
+expected result: /bin/zsh
